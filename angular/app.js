@@ -1,6 +1,6 @@
 var app = angular.module('mashup', []);
 
-app.controller('mainController', function($scope){
+app.controller('mainController', function($scope, $http){
   $scope.init = function(){
     var mapOptions = {
               zoom: 11,
@@ -23,6 +23,18 @@ app.controller('mainController', function($scope){
         });
         //console.log(pos);
 	});
+
+  $http.get({
+    url: "https://api.foursquare.com/v2/venues/search?callback=?",
+    datatype: "jsonp",
+    data: {
+      'client_id': '5PHSPJ2ZXMH3JIN1DDOVMIFSLLIS4BOQ4XD2LZE10EFMDH23',
+      'client_secret': 'OHNT2TYCCPXLEMBBH3XZ15VP12O5QB2P31FN4LZYRFA0NKU1',
+      'v': '20170103',
+      'limit': '10'
+
+    }
+  });
   google.maps.event.addDomListener(window, 'load', $scope.init);
 
 });
