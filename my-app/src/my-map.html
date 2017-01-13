@@ -1,0 +1,23 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/google-map/google-map.html">
+<link rel="import" href="../bower_components/geo-location/geo-location.html">
+
+<dom-module id="my-map">
+  <style>
+  google-map{
+    display: block;
+    height: 100%;
+  }
+  </style>
+  <template>
+    <geo-location watch-pos latitude="{{ latitude }}" longitude="{{ longitude }}"></geo-location>
+    <google-map latitude="[[latitude]]" longitude="[[longitude]]" zoom="13" api-key="AIzaSyCZ52mvUoJplSOmOFE2KW0u5v6jny870IM">
+      <google-map-marker latitude="[[latitude]]" longitude="[[longitude]]" draggable="true"></google-map-marker>
+    </google-map>
+</template>
+<script>
+  Polymer({
+    is: 'my-map',
+  });
+</script>
+</dom-module>
