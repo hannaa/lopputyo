@@ -1,0 +1,29 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="my-list">
+  <template>
+    <iron-ajax
+      auto
+      url="https://api.foursquare.com/v2/venues/categories?"
+      params='{"client_id": "5PHSPJ2ZXMH3JIN1DDOVMIFSLLIS4BOQ4XD2LZE10EFMDH23",
+      "client_secret": "OHNT2TYCCPXLEMBBH3XZ15VP12O5QB2P31FN4LZYRFA0NKU1",
+      "v": "20150729"}'
+      last-response="{{data}}"
+      handle-as="json"
+      >
+      </iron-ajax>
+    <template is="dom-repeat" items="[[data.response.categories]]">
+      <span>{{item.name}}</span>
+      <span>{{item.id}}</span>
+    </template>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-list',
+    });
+  </script>
+
+</dom-module>
