@@ -1,28 +1,86 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/geo-location/geo-location.html">
 
 <dom-module id="my-list">
   <template>
     <iron-ajax
       auto
-      url="https://api.foursquare.com/v2/venues/categories?"
-      params='{"client_id": "5PHSPJ2ZXMH3JIN1DDOVMIFSLLIS4BOQ4XD2LZE10EFMDH23",
-      "client_secret": "OHNT2TYCCPXLEMBBH3XZ15VP12O5QB2P31FN4LZYRFA0NKU1",
-      "v": "20150729"}'
+      url="https://api.foursquare.com/v2/venues/search?"
+      params="{{ajaxParams}}"
       last-response="{{data}}"
       handle-as="json"
       >
       </iron-ajax>
-    <template is="dom-repeat" items="[[data.response.categories]]">
-      <span>{{item.name}}</span>
-      <span>{{item.id}}</span>
+    <template is="dom-repeat" items="[[data.response.venues]]">
+      <span>{{item.location.address}}</span>
+
     </template>
-  </template>
+</template>
 
   <script>
     Polymer({
       is: 'my-list',
+
+      properties: {
+            latitude: {
+                type: Number,
+                notify: true,
+                value: 60
+            },
+            longitude: {
+                type: Number,
+                notify: true,
+                value: 24
+            },
+            client_id: {
+                type: String,
+                value: '5PHSPJ2ZXMH3JIN1DDOVMIFSLLIS4BOQ4XD2LZE10EFMDH23'
+            },
+            client_secret: {
+                type: String,
+                value: 'OHNT2TYCCPXLEMBBH3XZ15VP12O5QB2P31FN4LZYRFA0NKU1'
+            },
+            v: {
+                type: Number,
+                value: '20150729'
+            },
+            limit: {
+                type: Number,
+                value: 10
+            },
+            ll: {
+                type: String,
+                notify: true,
+                observer: '_locationChanged'
+            },
+            ajaxParams: {
+                type: String,
+                computed: 'processParams(client_id, client_secret, v, limit, ll)'
+            }
+        },
+
+        processParams: function(client_id, client_secret, v, limit, ll) {
+            return {
+            client_id: client_id,
+            client_secret: client_secret,
+            v: v,
+            limit:limit,
+            ll: '60, 24'
+          };
+        },
+
+        _locationChanged: function (newValue, oldValue) {
+          navigator.geolocation.getCurrentPosition(function (position) {
+                  var pos = (position.coords.latitude + ", " + position.coords.longitude);
+                  var lat = position.coords.latitude;
+                  var lng = position.coords.longitude;
+                  console.log(pos);
+                  return(pos);
+                });
+        }
+
     });
   </script>
 
