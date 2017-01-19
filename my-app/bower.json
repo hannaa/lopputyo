@@ -20,7 +20,8 @@
     "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",
     "google-map": "GoogleWebComponents/google-map#^1.1.14",
     "google-apis": "GoogleWebComponents/google-apis#^1.1.7",
-    "geo-location": "ebidel/geo-location#^1.0.6"
+    "geo-location": "ebidel/geo-location#^1.0.6",
+    "paper-checkbox": "PolymerElements/paper-checkbox#^1.4.2"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
