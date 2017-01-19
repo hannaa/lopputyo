@@ -5,6 +5,9 @@
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+
+<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 <link rel="import" href="my-map.html">
 <link rel="import" href="my-list.html">
 
@@ -21,6 +24,7 @@
       app-header {
         color: #fff;
         background-color: var(--app-primary-color);
+        font-family: 'Inconsolata', monospace;
       }
       app-header paper-icon-button {
         --paper-icon-button-ink-color: white;
@@ -48,6 +52,12 @@
       <!-- Drawer content -->
       <app-drawer id="drawer">
         <app-toolbar>Menu</app-toolbar>
+          <paper-checkbox checked>Arts & Entertainment</paper-checkbox>
+          <paper-checkbox checked>Food</paper-checkbox>
+          <paper-checkbox checked>Nightlife</paper-checkbox>
+          <paper-checkbox checked>Outdoors</paper-checkbox>
+          <paper-checkbox checked>Shops</paper-checkbox>
+
           <my-list></my-list>
       </app-drawer>
 
