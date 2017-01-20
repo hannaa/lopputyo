@@ -2,15 +2,10 @@
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/google-map/google-map.html">
+<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="my-map.html">
 
 <dom-module id="my-list">
-  <style>
-  google-map{
-    display: block;
-    height: 100%;
-    width: 100%;
-  }
-  </style>
   <template>
       <iron-ajax
         auto
@@ -18,11 +13,12 @@
         params="{{ajaxParams}}"
         last-response="{{data}}"
         handle-as="json"
+        on-response="venuesLoaded"
         >
         </iron-ajax>
+
       <template is="dom-repeat" items="[[data.response.venues]]">
         <span>{{item.name}}</span>
-
       </template>
   </template>
 
@@ -51,6 +47,10 @@
             ll: {
                 type: String
             },
+            dataCollection: {
+              type: Array,
+              notify: true
+            },
             ajaxParams: {
                 type: String,
                 computed: 'processParams(client_id, client_secret, v, limit, ll)'
@@ -69,6 +69,15 @@
             limit:limit,
             ll: ll
           };
+        },
+
+        ready: function(){
+          this.dataCollection;
+        },
+
+        venuesLoaded: function (data) {
+          this.dataCollection = this.data.response.venues;
+          console.log(this.dataCollection);
         }
     });
 
