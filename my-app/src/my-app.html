@@ -115,6 +115,10 @@
                 return ['4d4b7104d754a06370d81259', '4d4b7105d754a06374d81259'];
               }
             },
+            radius:{
+              type: Number,
+              value: '2000'
+            },
             dataCollection: {
               type: Array,
               notify: true,
@@ -124,7 +128,7 @@
             },
             ajaxParams: {
                 type: String,
-                computed: 'processParams(client_id, client_secret, v, limit, ll, categoryId)'
+                computed: 'processParams(client_id, client_secret, v, limit, ll, categoryId, radius)'
             }
         },
 
@@ -132,14 +136,15 @@
           getCurrentLat(position => this.ll = position);
         },
 
-        processParams: function(client_id, client_secret, v, limit, ll, categoryId) {
+        processParams: function(client_id, client_secret, v, limit, ll, categoryId, radius) {
             return {
             client_id: client_id,
             client_secret: client_secret,
             v: v,
             limit:limit,
             ll: ll,
-            categoryId: categoryId
+            categoryId: categoryId,
+            radius, radius
           };
         },
 
