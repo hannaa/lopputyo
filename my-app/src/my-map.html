@@ -16,17 +16,18 @@
     <geo-location watch-pos latitude="{{ latitude }}" longitude="{{ longitude }}"></geo-location>
     <google-map id="venueMap" latitude="[[latitude]]" longitude="[[longitude]]" zoom="13" api-key="AIzaSyCZ52mvUoJplSOmOFE2KW0u5v6jny870IM">
       <google-map-marker latitude="[[latitude]]" longitude="[[longitude]]" draggable="false"></google-map-marker>
+      <template is="dom-repeat" items="{{data}}">
+        <google-map-marker latitude="{{item.location.lat}}" longitude="{{item.location.lng}}" draggable="false" click-events="true" on-google-map-marker-click="google_map_marker_click">
+          <h1>{{item.name}}</h1>
+          <h3>{{item.location.address}}</h3>
+        </google-map-marker>
+      </template>
     </google-map>
   </template>
 
   <script>
     Polymer({
-      is: 'my-map',
-
-      ready: function() {
-        var distributed = this.getContentChildren('#list');
-        console.log(distributed.length);
-      }
+      is: 'my-map'
     });
   </script>
 </dom-module>
