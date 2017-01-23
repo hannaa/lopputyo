@@ -1,96 +1,22 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/google-map/google-map.html">
+<link rel=import href="my-app.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="my-map.html">
 
 <dom-module id="my-list">
   <template>
-      <iron-ajax
-        auto
-        url="https://api.foursquare.com/v2/venues/search?"
-        params="{{ajaxParams}}"
-        last-response="{{data}}"
-        handle-as="json"
-        on-response="venuesLoaded"
-        >
-        </iron-ajax>
-
-      <template is="dom-repeat" items="[[data.response.venues]]">
-        <span>{{item.name}}</span>
+      <template is="dom-repeat" items="{{data}}">
+        <li>{{item.name}}</li>
       </template>
   </template>
 
   <script>
   HTMLImports.whenReady(() => {
     Polymer({
-      is: 'my-list',
-
-      properties: {
-            client_id: {
-                type: String,
-                value: '5PHSPJ2ZXMH3JIN1DDOVMIFSLLIS4BOQ4XD2LZE10EFMDH23'
-            },
-            client_secret: {
-                type: String,
-                value: 'OHNT2TYCCPXLEMBBH3XZ15VP12O5QB2P31FN4LZYRFA0NKU1'
-            },
-            v: {
-                type: Number,
-                value: '20150729'
-            },
-            limit: {
-                type: Number,
-                value: '10'
-            },
-            ll: {
-                type: String
-            },
-            dataCollection: {
-              type: Array,
-              notify: true
-            },
-            ajaxParams: {
-                type: String,
-                computed: 'processParams(client_id, client_secret, v, limit, ll)'
-            }
-        },
-
-        attached(){
-          getCurrentLat(position => this.ll = position);
-        },
-
-        processParams: function(client_id, client_secret, v, limit, ll) {
-            return {
-            client_id: client_id,
-            client_secret: client_secret,
-            v: v,
-            limit:limit,
-            ll: ll
-          };
-        },
-
-        ready: function(){
-          this.dataCollection;
-        },
-
-        venuesLoaded: function (data) {
-          this.dataCollection = this.data.response.venues;
-          console.log(this.dataCollection);
-        }
+      is: 'my-list'
     });
-
-    function getCurrentLat(callback){
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(function(position) {
-            callback(position.coords.latitude + ", " + position.coords.longitude);
-        });
-      }else{
-        console.log("Unable to access your geolocation");
-      }
-    }
 });
+
   </script>
 
 </dom-module>

@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
 <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 <link rel="import" href="my-map.html">
@@ -47,6 +48,15 @@
         font-weight: bold;
       }
     </style>
+    <iron-ajax
+      auto
+      url="https://api.foursquare.com/v2/venues/search?"
+      params="{{ajaxParams}}"
+      last-response="{{data}}"
+      handle-as="json"
+      on-response="venuesLoaded"
+      >
+      </iron-ajax>
 
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
@@ -58,7 +68,7 @@
           <paper-checkbox checked>Outdoors</paper-checkbox>
           <paper-checkbox checked>Shops</paper-checkbox>
 
-          <my-list></my-list>
+            <my-list data="{{dataCollection}}"></my-list>
       </app-drawer>
 
       <!-- Main content -->
@@ -70,13 +80,92 @@
             <div main-title>My App</div>
           </app-toolbar>
         </app-header>
-        <my-map></my-map>
+        <my-map data="{{dataCollection}}"></my-map>
       </app-header-layout>
     </app-drawer-layout>
   </template>
   <script>
+  HTMLImports.whenReady(() => {
     Polymer({
       is: 'my-app',
+
+      properties: {
+            client_id: {
+                type: String,
+                value: '5PHSPJ2ZXMH3JIN1DDOVMIFSLLIS4BOQ4XD2LZE10EFMDH23'
+            },
+            client_secret: {
+                type: String,
+                value: 'OHNT2TYCCPXLEMBBH3XZ15VP12O5QB2P31FN4LZYRFA0NKU1'
+            },
+            v: {
+                type: Number,
+                value: '20150729'
+            },
+            limit: {
+                type: Number,
+                value: '10'
+            },
+            ll: {
+                type: String
+            },
+            categoryId: {
+              type: String,
+              value: function(){
+                return ['4d4b7104d754a06370d81259', '4d4b7105d754a06374d81259'];
+              }
+            },
+            dataCollection: {
+              type: Array,
+              notify: true,
+              value: function(){
+                return [];
+              }
+            },
+            ajaxParams: {
+                type: String,
+                computed: 'processParams(client_id, client_secret, v, limit, ll, categoryId)'
+            }
+        },
+
+        attached(){
+          getCurrentLat(position => this.ll = position);
+        },
+
+        processParams: function(client_id, client_secret, v, limit, ll, categoryId) {
+            return {
+            client_id: client_id,
+            client_secret: client_secret,
+            v: v,
+            limit:limit,
+            ll: ll,
+            categoryId: categoryId
+          };
+        },
+
+        ready: function(data){
+          this.dataCollection = [];
+        },
+
+        venuesLoaded: function (data) {
+          for(var i = 0; i < this.data.response.venues.length; i++){
+            console.log(this.data.response.venues[i].name);
+            var venueName = this.data.response.venues[i];
+            this.push('dataCollection', venueName);
+          }
+          console.log(this.dataCollection);
+        }
     });
+});
+    function getCurrentLat(callback){
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(function(position) {
+            callback(position.coords.latitude + ", " + position.coords.longitude);
+        });
+      }else{
+        console.log("Unable to access your geolocation");
+      }
+    }
+
   </script>
 </dom-module>
