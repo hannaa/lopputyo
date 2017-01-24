@@ -50,7 +50,7 @@
     </style>
     <iron-ajax
       auto
-      url="https://api.foursquare.com/v2/venues/search?"
+      url="https://api.foursquare.com/v2/venues/search"
       params="{{ajaxParams}}"
       last-response="{{data}}"
       handle-as="json"
@@ -61,12 +61,6 @@
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
       <app-drawer id="drawer">
-        <app-toolbar>Menu</app-toolbar>
-          <paper-checkbox checked>Arts & Entertainment</paper-checkbox>
-          <paper-checkbox checked>Food</paper-checkbox>
-          <paper-checkbox checked>Nightlife</paper-checkbox>
-          <paper-checkbox checked>Outdoors</paper-checkbox>
-          <paper-checkbox checked>Shops</paper-checkbox>
 
             <my-list data="{{dataCollection}}"></my-list>
       </app-drawer>
@@ -111,9 +105,7 @@
             },
             categoryId: {
               type: String,
-              value: function(){
-                return ['4d4b7104d754a06370d81259', '4d4b7105d754a06374d81259'];
-              }
+              value: '4d4b7104d754a06370d81259,' + '4d4b7105d754a06374d81259,' + '4d4b7105d754a06372d81259'
             },
             radius:{
               type: Number,
@@ -138,13 +130,13 @@
 
         processParams: function(client_id, client_secret, v, limit, ll, categoryId, radius) {
             return {
-            client_id: client_id,
-            client_secret: client_secret,
+            client_id: encodeURI(client_id),
+            client_secret: encodeURI(client_secret),
             v: v,
             limit:limit,
             ll: ll,
             categoryId: categoryId,
-            radius, radius
+            radius: radius
           };
         },
 
