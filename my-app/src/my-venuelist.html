@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <link href="https://fonts.googleapis.com/css?family=Lobster|Raleway:600" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Dancing+Script|Roboto" rel="stylesheet">
 
 <dom-module id="my-venuelist">
   <template>
@@ -22,14 +23,14 @@
         }
         --paper-card-header-image-text:{
           color: #FFF;
-          font-family: 'Lobster', cursive;
+          font-family: 'Dancing Script', cursive;;
           font-size: 34px;
           margin-bottom: 5px;
         }
         --paper-card-content:{
           @apply(--layout-vertical);
           @apply(--layout-center);
-          font-family: 'Raleway', sans-serif;
+          font-family: 'Roboto', sans-serif;
           padding: 10px;
         }
       }
@@ -47,6 +48,16 @@
       @media (max-width: 600px) {
         :host {
            --app-grid-columns: 2;
+           --paper-card-header-image-text:{
+             color: #FFF;
+             font-family: 'Dancing Script', cursive;
+             font-size: 26px;
+             margin-bottom: 5px;
+           }
+           --paper-card-header:{
+             @apply(--layout-vertical);
+             @apply(--layout-center);
+           }
         }
       }
       </style>
