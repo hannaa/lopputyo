@@ -1,7 +1,4 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-list/iron-list.html">
-<link rel=import href="my-app.html">
-<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 
 <dom-module id="my-list">
   <template>
@@ -13,7 +10,6 @@
       <paper-checkbox checked>Shops</paper-checkbox>
       <template is="dom-repeat" items="{{data}}">
         <li>{{item.name}}</li>
-
         <template is="dom-repeat" items="{{item.categories}}" as="id">
           <li>{{item.id}}</li>
         </template>
@@ -21,21 +17,22 @@
   </template>
 
   <script>
-  HTMLImports.whenReady(() => {
-    Polymer({
-      is: 'my-list',
-      properties: {
-                hide: {
-                    type: Boolean,
-                    value: true // init the value to true so it will be hidden on page load
-                }
-            },
-            showFood: function() {
-                this.hide = !this.hide
+    HTMLImports.whenReady(() => {
+      Polymer({
+        is: 'my-list',
 
-            }
+        properties: {
+          hide: {
+            type: Boolean,
+            value: true // init the value to true so it will be hidden on page load
+          }
+        },
+
+        showFood: function() {
+          this.hide = !this.hide
+        }
+      });
     });
-});
 
   </script>
 
