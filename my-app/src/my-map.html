@@ -1,8 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/google-map/google-map.html">
 <link rel="import" href="../bower_components/geo-location/geo-location.html">
-<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="my-list.html">
 
 <dom-module id="my-map">
   <style>
@@ -31,7 +29,7 @@
 
       resizeMap: function(){
         this.$.map.notifyResize();
-        console.log("MOOI");
+        console.log("Map resized!");
       }
     });
   </script>

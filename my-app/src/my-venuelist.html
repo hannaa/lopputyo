@@ -1,0 +1,86 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-layout/app-grid/app-grid-style.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<link href="https://fonts.googleapis.com/css?family=Lobster|Raleway:600" rel="stylesheet">
+
+<dom-module id="my-venuelist">
+  <template>
+    <style include="app-grid-style">
+      :host {
+        --app-grid-columns: 3;
+        --app-grid-item-height: 100px;
+        --app-grid-gutter: 10px;
+        --paper-card-header-image:{
+           height: 80px;
+        }
+        --paper-card-header:{
+          @apply(--layout-vertical);
+          @apply(--layout-center);
+
+        }
+        --paper-card-header-image-text:{
+          color: #FFF;
+          font-family: 'Lobster', cursive;
+          font-size: 34px;
+          margin-bottom: 5px;
+        }
+        --paper-card-content:{
+          @apply(--layout-vertical);
+          @apply(--layout-center);
+          font-family: 'Raleway', sans-serif;
+          padding: 10px;
+        }
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      .item {
+        @apply(paper-card-header-image);
+        @apply(paper-card-header-image-text);
+        background-color: #C5CAE9;
+        height: 200px;
+      }
+      @media (max-width: 600px) {
+        :host {
+           --app-grid-columns: 2;
+        }
+      }
+      </style>
+      <ul class="app-grid">
+        <template is="dom-repeat" items="{{data}}" >
+          <paper-card class="item" heading="{{item.name}}" image="../images/background.jpg" alt="image">
+            <div class="card-content">{{item.location.address}}</div>
+            <div class="card-content">{{item.contact.formattedPhone}}</div>
+            <div class="card-content">
+              <a name="url" href="{{item.url}}">Home Page</a>
+            </div>
+          </paper-card>
+        </template>
+      </ul>
+  </template>
+
+  <script>
+    HTMLImports.whenReady(() => {
+      Polymer({
+        is: 'my-venuelist',
+
+        attached: function() {
+          this._updateGridStyles = this._updateGridStyles || function() {
+            this.updateStyles();
+          }.bind(this);
+          window.addEventListener('resize', this._updateGridStyles);
+        },
+
+        detached: function() {
+          window.removeEventListener('resize', this._updateGridStyles);
+        }
+      });
+    });
+
+  </script>
+
+</dom-module>
