@@ -17,6 +17,7 @@
 
 <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Lobster|Raleway:600" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Dancing+Script|Roboto" rel="stylesheet">
 <link rel="import" href="my-map.html">
 <link rel="import" href="my-list.html">
 <link rel="import" href="my-venuelist.html">
@@ -25,8 +26,8 @@
   <template>
     <style>
       :host {
-        --app-primary-color: #303F9F;
-        --app-secondary-color: white;
+        --app-primary-color: #FFC107;
+        --app-secondary-color: rgba(255,255,255,1);
 
         display: block;
       }
@@ -34,7 +35,8 @@
       app-header {
         color: #fff;
         background-color: var(--app-primary-color);
-        font-family: 'Lobster', cursive;
+        font-family: 'Dancing Script', cursive;
+        font-size: 26px;
       }
 
       app-header paper-icon-button {
@@ -45,6 +47,10 @@
         height: 100%;
       }
 
+      paper-tabs {
+        padding-top: 8px;
+      }
+
       .drawer-list {
         margin: 0 20px;
       }
@@ -52,7 +58,8 @@
       .drawer-list a {
         color: var(--app-secondary-color);
         display: block;
-        font-family: 'Raleway', sans-serif;
+        font-family: 'Roboto', sans-serif;
+        font-size: 18px;
         line-height: 40px;
         padding: 0 16px;
         text-decoration: none;
@@ -66,6 +73,10 @@
       .link {
         @apply(--layout-horizontal);
         @apply(--layout-center-center);
+      }
+
+      .title {
+        font-size: 30px;
       }
 
     </style>
@@ -100,7 +111,7 @@
         <app-header condenses reveals effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>My Food 2.0</div>
+            <div main-title class="title">My Food 2.0</div>
 
             <paper-tabs selected="0">
               <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
@@ -151,7 +162,7 @@
             },
             limit: {
               type: Number,
-              value: '20'
+              value: '10'
             },
             ll: {
               type: String
