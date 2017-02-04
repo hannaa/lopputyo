@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <meta name="theme-color" content="#C62828">
     <!-- include google maps lib into your main index.html file -->
-    <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
     <script>
       // Setup Polymer options
       window.Polymer = {
@@ -29,22 +29,6 @@
             );
           }
         };
-
-        var webComponentsSupported = (
-          'registerElement' in document
-          && 'import' in document.createElement('link')
-          && 'content' in document.createElement('template')
-        );
-
-        if (!webComponentsSupported) {
-          var script = document.createElement('script');
-          script.async = true;
-          script.src = '/bower_components/webcomponentsjs/webcomponents-lite.min.js';
-          script.onload = onload;
-          document.head.appendChild(script);
-        } else {
-          onload();
-        }
       })();
 
       // Load pre-caching Service Worker
@@ -55,6 +39,7 @@
       }
     </script>
     <link rel="import" href="src/my-app.html">
+
 
     <style>
       html, body{
