@@ -32,6 +32,7 @@
           @apply(--layout-center);
           font-family: 'Roboto', sans-serif;
           padding: 10px;
+          border-color: #a8cd1b;
         }
       }
 
@@ -42,7 +43,7 @@
       .item {
         @apply(paper-card-header-image);
         @apply(paper-card-header-image-text);
-        background-color: #C5CAE9;
+        background-color: #FFF;
         height: 200px;
       }
       @media (max-width: 600px) {
@@ -63,7 +64,7 @@
       </style>
       <ul class="app-grid">
         <template is="dom-repeat" items="{{data}}" >
-          <paper-card class="item" heading="{{item.name}}" image="../images/background.jpg" alt="image">
+          <paper-card class="item" heading="{{item.name}}" image="../images/background.jpg" alt="background_image">
             <div class="card-content">{{item.location.address}}</div>
             <div class="card-content">{{item.contact.formattedPhone}}</div>
             <div class="card-content">

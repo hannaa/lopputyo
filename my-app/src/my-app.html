@@ -13,20 +13,20 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="my-icons.html">
 
 <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Lobster|Raleway:600" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Dancing+Script|Roboto" rel="stylesheet">
 <link rel="import" href="my-map.html">
-<link rel="import" href="my-list.html">
 <link rel="import" href="my-venuelist.html">
 
 <dom-module id="my-app">
   <template>
     <style>
       :host {
-        --app-primary-color: #FFC107;
+        --app-primary-color: #005A31;
         --app-secondary-color: rgba(255,255,255,1);
 
         display: block;
@@ -102,7 +102,8 @@
       <!-- Drawer content -->
       <app-drawer id="drawer">
           <app-toolbar>Menu</app-toolbar>
-          <my-list data="{{dataCollection}}"></my-list>
+          <paper-slider min="0" max="50" pin value="10" immediate-value="{{immediateValue}}" on-immediate-value-change="immediateValueChange"></paper-slider>
+
       </app-drawer>
 
       <!-- Main content -->
@@ -245,6 +246,10 @@
 
         _showPage404: function() {
           this.page = 'view404';
+        },
+
+        immediateValueChange: function(e) {
+          this.limit = this.immediateValue;
         }
       });
     });
