@@ -21,6 +21,7 @@
 <link href="https://fonts.googleapis.com/css?family=Dancing+Script|Roboto" rel="stylesheet">
 <link rel="import" href="my-map.html">
 <link rel="import" href="my-venuelist.html">
+<link rel="import" href="my-here.html">
 
 <dom-module id="my-app">
   <template>
@@ -102,8 +103,8 @@
       <!-- Drawer content -->
       <app-drawer id="drawer">
           <app-toolbar>Menu</app-toolbar>
-          <paper-slider min="0" max="50" pin value="10" immediate-value="{{immediateValue}}" on-immediate-value-change="immediateValueChange"></paper-slider>
-
+          <paper-input label="Limit (default: 10)" type="number" min="0" max="50" value="{{value}}" on-change="getValue"></paper-input>
+          <paper-input label="Radius in meters (default: 2000m)" type="number" min="500" max="5000" step="100" value="{{radiusValue}}" on-change="getRadius"></paper-input>
       </app-drawer>
 
       <!-- Main content -->
@@ -122,6 +123,9 @@
               <paper-tab link>
                 <a name="venuelist" href="/venuelist" class="link" tabindex="-1">Show venue list</a>
               </paper-tab>
+              <paper-tab link>
+                <a name="here" href="/here" class="link" tabindex="-1">Show Here</a>
+              </paper-tab>
               </iron-selector>
             </paper-tabs>
 
@@ -135,6 +139,7 @@
           role="main">
           <my-map id="map" data="{{dataCollection}}"></my-map>
           <my-venuelist id="venuelist" data="{{dataCollection}}"></my-venuelist>
+          <my-here id="here" latitude={{latitude}} longitude="{{longitude}}"></my-here>
         </iron-pages>
 
       </app-header-layout>
@@ -191,11 +196,19 @@
               type: String,
               reflectToAttribute: true,
               observer: '_pageChanged',
+            },
+            position: {
+              type: String,
+              computed: 'positionParams(ll)'
+            },
+            latitude: {
+              type: Number
             }
+
         },
 
         attached(){
-          getCurrentLat(position => this.ll = position);
+          getCurrentPos(position => this.ll = position);
         },
 
         processParams: function(client_id, client_secret, v, limit, ll, categoryId, radius) {
@@ -208,6 +221,13 @@
               categoryId: categoryId,
               radius: radius
             }
+        },
+
+        positionParams: function(ll){
+          var spl = ll.split(",");
+          this.latitude = spl[0];
+          this.longitude = spl[1];
+          console.log(this.latitude, this.longitude);
         },
 
         ready: function(data){
@@ -248,13 +268,21 @@
           this.page = 'view404';
         },
 
-        immediateValueChange: function(e) {
-          this.limit = this.immediateValue;
+        getValue: function(){
+          console.log(this.value);
+          this.dataCollection = [];
+          this.limit = this.value;
+        },
+
+        getRadius: function(){
+          console.log(this.radiusValue);
+          this.dataCollection = [];
+          this.radius = this.radiusValue;
         }
       });
     });
 
-    function getCurrentLat(callback){
+    function getCurrentPos(callback){
       if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(function(position) {
           callback(position.coords.latitude + ", " + position.coords.longitude);

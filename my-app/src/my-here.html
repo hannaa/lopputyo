@@ -1,0 +1,42 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/mapbox-gl/mapbox-gl.html">
+
+<dom-module id="my-here">
+  <template>
+    <style>
+      #map{
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <mapbox-gl id="map"
+      map
+      interactive
+      mapStyle="{{mapStyle}}"
+      script-src="../bower_components/mapbox-gl-js/mapbox-gl.js"
+      access-token="pk.eyJ1IjoiaGFubmFrYWlzIiwiYSI6ImNpeXN6dnczYjAwMG8ycHBjeW44Y2J6aW0ifQ.nJbgIPU2obZwru8i-9P_0g"
+      latitude={{latitude}} longitude={{longitude}}
+      zoom=13 pitch=60
+      bearing=0>    </mapbox-gl>
+  </template>
+
+<script>
+window.addEventListener('WebComponentsReady', function(e) {
+    Polymer({
+      is: 'my-here',
+
+      properties: {
+        mapStyle: {
+          type: Object
+        }
+      },
+
+      getStyle: function(){
+        this.mapStyle = 'mapbox://styles/mapbox/basic-v9';
+        console.log(this.mapStyle);
+      }
+    });
+});
+</script>
+</dom-module>
