@@ -139,7 +139,7 @@
           role="main">
           <my-map id="map" data="{{dataCollection}}"></my-map>
           <my-venuelist id="venuelist" data="{{dataCollection}}"></my-venuelist>
-          <my-here id="here" latitude={{latitude}} longitude="{{longitude}}"></my-here>
+          <my-here id="here" user-latitude={{latitude}} user-longitude="{{longitude}}" data="{{dataCollection}}"></my-here>
         </iron-pages>
 
       </app-header-layout>
@@ -200,11 +200,7 @@
             position: {
               type: String,
               computed: 'positionParams(ll)'
-            },
-            latitude: {
-              type: Number
             }
-
         },
 
         attached(){

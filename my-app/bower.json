@@ -33,7 +33,8 @@
     "paper-progress": "PolymerElements/paper-progress#^1.0.11",
     "paper-slider": "PolymerElements/paper-slider#^1.0.13",
     "here-map-polymer": "*",
-    "mapbox-gl": "PolymerVis/mapbox-gl#^1.0.0"
+    "mapbox-gl": "PolymerVis/mapbox-gl#^1.0.0",
+    "mgl-map": "mapbox-gl-map-element#^1.1.5"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
