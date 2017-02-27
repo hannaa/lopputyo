@@ -1,0 +1,29 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/google-map/google-map.html">
+<link rel="import" href="../bower_components/geo-location/geo-location.html">
+
+</head><body><dom-module id="my-map">
+  <style>
+  google-map{
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+  </style>
+  <template>
+    <geo-location watch-pos="" latitude="{{ latitude }}" longitude="{{ longitude }}"></geo-location>
+    <google-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="13" api-key="AIzaSyCZ52mvUoJplSOmOFE2KW0u5v6jny870IM">
+      <google-map-marker latitude="[[latitude]]" longitude="[[longitude]]" draggable="false"></google-map-marker>
+      <template is="dom-repeat" items="{{data}}">
+        <google-map-marker latitude="{{item.location.lat}}" longitude="{{item.location.lng}}" draggable="false" click-events="true">
+          <h3 style="margin: 0">{{item.name}}</h3>
+          <h3>{{item.location.address}}</h3>
+          <a href="https://www.google.es/maps?saddr=[[latitude]], + [[longitude]] + &amp;daddr={{item.location.address}}">Show directions in Google Maps</a>
+        </google-map-marker>
+      </template>
+    </google-map>
+  </template>
+
+  <script>Polymer({is:"my-map",resizeMap:function(){this.$.map.notifyResize(),console.log("Map resized!")}});</script>
+</dom-module>
+</body></html>
