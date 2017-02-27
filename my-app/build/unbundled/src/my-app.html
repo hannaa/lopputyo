@@ -1,0 +1,292 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="my-icons.html">
+
+<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Lobster|Raleway:600" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Dancing+Script|Roboto" rel="stylesheet">
+<link rel="import" href="my-map.html">
+<link rel="import" href="my-venuelist.html">
+<link rel="import" href="my-here.html">
+
+</head><body><dom-module id="my-app">
+  <template>
+    <style>
+      :host {
+        --app-primary-color: #005A31;
+        --app-secondary-color: rgba(255,255,255,1);
+
+        display: block;
+      }
+
+      app-header {
+        color: #fff;
+        background-color: var(--app-primary-color);
+        font-family: 'Dancing Script', cursive;
+        font-size: 26px;
+      }
+
+      app-header paper-icon-button {
+        --paper-icon-button-ink-color: white;
+      }
+
+      iron-pages {
+        height: 100%;
+      }
+
+      paper-tabs {
+        padding-top: 8px;
+      }
+
+      .drawer-list {
+        margin: 0 20px;
+      }
+
+      .drawer-list a {
+        color: var(--app-secondary-color);
+        display: block;
+        font-family: 'Roboto', sans-serif;
+        font-size: 18px;
+        line-height: 40px;
+        padding: 0 16px;
+        text-decoration: none;
+      }
+
+      .drawer-list a.iron-selected {
+        color: black;
+        font-weight: bold;
+      }
+
+      .link {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+
+      .title {
+        font-size: 30px;
+      }
+
+      p {
+        font-family: 'Roboto', sans-serif;
+        margin: 16px;
+      }
+
+      @media (max-width: 600px) {
+        .drawer-list a{
+          font-size: 15px;
+        }
+      }
+
+    </style>
+
+    <app-location route="{{route}}"></app-location>
+    <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}">
+    </app-route>
+
+    <iron-ajax auto="" url="https://api.foursquare.com/v2/venues/search" params="{{ajaxParams}}" last-response="{{data}}" handle-as="json" on-response="venuesLoaded">
+    </iron-ajax>
+
+    <app-drawer-layout fullbleed="">
+      
+      <app-drawer id="drawer">
+          <app-toolbar></app-toolbar>
+          <paper-input label="Limit (default: 10)" type="number" min="0" max="50" value="{{value}}" on-change="getValue"></paper-input>
+          <paper-input label="Radius in meters (default: 2000m)" type="number" min="500" max="5000" step="100" value="{{radiusValue}}" on-change="getRadius"></paper-input>
+          <p>Find restaurants near your location.</p>
+          <p>You can set limit to results or change the radius of the search area.</p>
+      </app-drawer>
+
+      
+      <app-header-layout has-scrolling-region="">
+
+        <app-header condenses="" reveals="" effects="waterfall">
+          <app-toolbar>
+            <paper-icon-button icon="my-icons:menu" drawer-toggle=""></paper-icon-button>
+            <div main-title="" class="title">My Food 2.0</div>
+
+            <paper-tabs selected="0">
+              <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+              <paper-tab link="">
+                <a name="map" href="/map" id="link" class="link" tabindex="-1">Map</a>
+              </paper-tab>
+              <paper-tab link="">
+                <a name="venuelist" href="/venuelist" class="link" tabindex="-1">Venuelist</a>
+              </paper-tab>
+              
+              </iron-selector>
+            </paper-tabs>
+
+          </app-toolbar>
+        </app-header>
+
+        <iron-pages selected="[[page]]" attr-for-selected="id" fallback-selection="view404" role="main">
+          <my-map id="map" data="{{dataCollection}}"></my-map>
+          <my-venuelist id="venuelist" data="{{dataCollection}}"></my-venuelist>
+          <my-here id="here" user-latitude="{{latitude}}" user-longitude="{{longitude}}" data="{{dataCollection}}"></my-here>
+        </iron-pages>
+
+      </app-header-layout>
+    </app-drawer-layout>
+  </template>
+
+  <script>
+
+    HTMLImports.whenReady(() => {
+        Polymer({
+          is: 'my-app',
+
+          properties: {
+
+            client_id: {
+              type: String,
+              value: '5PHSPJ2ZXMH3JIN1DDOVMIFSLLIS4BOQ4XD2LZE10EFMDH23'
+            },
+            client_secret: {
+              type: String,
+              value: 'OHNT2TYCCPXLEMBBH3XZ15VP12O5QB2P31FN4LZYRFA0NKU1'
+            },
+            v: {
+              type: Number,
+              value: '20150729'
+            },
+            limit: {
+              type: Number,
+              value: '10'
+            },
+            ll: {
+              type: String
+            },
+            categoryId: {
+              type: String,
+              value: '4d4b7105d754a06374d81259'
+            },
+            radius:{
+              type: Number,
+              value: '2000'
+            },
+            dataCollection: {
+              type: Array,
+              notify: true,
+              value: function(){
+                return [];
+              }
+            },
+            ajaxParams: {
+              type: String,
+              computed: 'processParams(client_id, client_secret, v, limit, ll, categoryId, radius)'
+            },
+            page: {
+              type: String,
+              reflectToAttribute: true,
+              observer: '_pageChanged',
+            },
+            position: {
+              type: String,
+              computed: 'positionParams(ll)'
+            }
+        },
+
+        attached(){
+          getCurrentPos(position => this.ll = position);
+        },
+
+        processParams: function(client_id, client_secret, v, limit, ll, categoryId, radius) {
+            return {
+              client_id: encodeURI(client_id),
+              client_secret: encodeURI(client_secret),
+              v: v,
+              limit:limit,
+              ll: ll,
+              categoryId: categoryId,
+              radius: radius
+            }
+        },
+
+        positionParams: function(ll){
+          var spl = ll.split(",");
+          this.latitude = spl[0];
+          this.longitude = spl[1];
+          console.log(this.latitude, this.longitude);
+        },
+
+        ready: function(data){
+          this.dataCollection = [];
+        },
+
+        venuesLoaded: function (data) {
+          for(var i = 0; i < this.data.response.venues.length; i++){
+            console.log(this.data.response.venues[i].name);
+            var venueName = this.data.response.venues[i];
+            this.push('dataCollection', venueName);
+          }
+          console.log(this.dataCollection);
+        },
+
+        observers: [
+          '_routePageChanged(routeData.page)',
+        ],
+
+        _routePageChanged: function(page) {
+          this.page = page || 'map';
+
+          if (!this.$.drawer.persistent) {
+            this.$.drawer.close();
+          }
+        },
+
+        _pageChanged: function(page) {
+          // Load page import on demand. Show 404 page if fails
+          var resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
+          this.importHref(resolvedPageUrl, null, this._showPage404, true);
+          if(page === 'map'){
+           this.$.map.resizeMap();
+          }
+        },
+
+        _showPage404: function() {
+          this.page = 'view404';
+        },
+
+        getValue: function(){
+          console.log(this.value);
+          this.dataCollection = [];
+          this.limit = this.value;
+          this.$.map.resizeMap();
+        },
+
+        getRadius: function(){
+          console.log(this.radiusValue);
+          this.dataCollection = [];
+          this.radius = this.radiusValue;
+          this.$.map.resizeMap();
+        }
+      });
+    });
+
+    function getCurrentPos(callback){
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(function(position) {
+          callback(position.coords.latitude + ", " + position.coords.longitude);
+        });
+      }else{
+        console.log("Unable to access your geolocation");
+      }
+    }
+
+  </script>
+</dom-module>
+</body></html>
