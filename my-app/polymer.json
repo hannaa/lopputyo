@@ -2,7 +2,8 @@
   "entrypoint": "index.html",
   "shell": "src/my-app.html",
   "fragments": [
-
+    "src/my-map.html",
+    "src/my-venuelist.html"
   ],
   "sourceGlobs": [
     "src/**/*",
