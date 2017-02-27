@@ -1,6 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/mapbox-gl/mapbox-gl.html">
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css' rel='stylesheet' />
+<link href='https://api.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css' rel='stylesheet'/>
 
 
 <dom-module id="my-here">
@@ -10,13 +10,10 @@
         height: 100%;
         width: 100%;
       }
-      .marker {
-    display: block;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    padding: 0;
-}
+      .marker{
+        position: absolute;
+      }
+
     </style>
 
   <mapbox-gl id="map"
@@ -62,47 +59,49 @@
       },
 
         _addUserMarker: function(map){
-          console.log(this.userLatitude);
-          var geojson = {
-    "type": "FeatureCollection",
-    "features": [
-        {
-            "type": "Feature",
-            "properties": {
-                "message": "Foo",
-                "iconSize": [60, 60],
-                "icon": "monument"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    this.userLongitude,
-                    this.userLatitude
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "message": "Bar",
-                "iconSize": [50, 50]
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    24.9375,
-                    60.170833
-                ]
-            }
-        }
-    ]
-};
+var geojson = {};
+var geojson1 = {};
+geojson['type'] = 'FeatureCollection';
+geojson['features'] = [];
+geojson1['venues'] = [];
+
+this.data.forEach( function (arrayItem)
+{
+  var newFeature = {
+  		"type": "Feature",
+  		"geometry": {
+  			"type": "Point",
+  			"coordinates": [arrayItem.location.lng, arrayItem.location.lat]
+  		},
+  		"properties": {
+        "message": "Foo",
+        "iconSize": [20, 30],
+        "iconAnchor": [10, 30]
+  		}
+  	}
+  	geojson1['venues'].push(newFeature);
+
+});
+
+	var userMarker = {
+		"type": "Feature",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [this.userLongitude, this.userLatitude]
+		},
+		"properties": {
+      "message": "moi",
+      "iconSize": [20, 30]
+		}
+	}
+
+	geojson['features'].push(userMarker);
 
 geojson.features.forEach(function(marker) {
     // create a DOM element for the marker
     var el = document.createElement('div');
     el.className = 'marker';
-    //el.style.backgroundImage = 'url(https://placekitten.com/g/' + marker.properties.iconSize.join('/') + '/)';
+    el.style.backgroundImage = 'url("../images/usermarker.png")';
     el.style.width = marker.properties.iconSize[0] + 'px';
     el.style.height = marker.properties.iconSize[1] + 'px';
 
@@ -111,8 +110,25 @@ geojson.features.forEach(function(marker) {
     });
 
     // add marker to map
-    new mapboxgl.Marker(el, {offset: [-marker.properties.iconSize[0] / 2, -marker.properties.iconSize[1] / 2]})
+    new mapboxgl.Marker(el, {offset: [-marker.properties.iconSize[0] / 5, -marker.properties.iconSize[1]]})
         .setLngLat(marker.geometry.coordinates)
+        .addTo(map);
+});
+geojson1.venues.forEach(function(venueMarker) {
+    // create a DOM element for the marker
+    var el = document.createElement('div');
+    el.className = 'venueMarker';
+    el.style.backgroundImage = 'url("../images/venuemarker.png")';
+    el.style.width = venueMarker.properties.iconSize[0] + 'px';
+    el.style.height = venueMarker.properties.iconSize[1] + 'px';
+
+    el.addEventListener('click', function() {
+        window.alert(venueMarker.properties.message);
+    });
+
+    // add marker to map
+    new mapboxgl.Marker(el, {offset: [-venueMarker.properties.iconSize[0] / 2, -venueMarker.properties.iconSize[1]]})
+        .setLngLat(venueMarker.geometry.coordinates)
         .addTo(map);
 });
         }

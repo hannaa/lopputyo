@@ -80,6 +80,17 @@
         font-size: 30px;
       }
 
+      p {
+        font-family: 'Roboto', sans-serif;
+        margin: 16px;
+      }
+
+      @media (max-width: 600px) {
+        .drawer-list a{
+          font-size: 15px;
+        }
+      }
+
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -102,9 +113,11 @@
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
       <app-drawer id="drawer">
-          <app-toolbar>Menu</app-toolbar>
+          <app-toolbar></app-toolbar>
           <paper-input label="Limit (default: 10)" type="number" min="0" max="50" value="{{value}}" on-change="getValue"></paper-input>
           <paper-input label="Radius in meters (default: 2000m)" type="number" min="500" max="5000" step="100" value="{{radiusValue}}" on-change="getRadius"></paper-input>
+          <p>Find restaurants near your location.</p>
+          <p>You can set limit to results or change the radius of the search area.</p>
       </app-drawer>
 
       <!-- Main content -->
@@ -118,14 +131,14 @@
             <paper-tabs selected="0">
               <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
               <paper-tab link>
-                <a name="map" href="/map" class="link" tabindex="-1">Show map</a>
+                <a name="map" href="/map" id="link" class="link" tabindex="-1">Map</a>
               </paper-tab>
               <paper-tab link>
-                <a name="venuelist" href="/venuelist" class="link" tabindex="-1">Show venue list</a>
+                <a name="venuelist" href="/venuelist" class="link" tabindex="-1">Venuelist</a>
               </paper-tab>
-              <paper-tab link>
+              <!--<paper-tab link>
                 <a name="here" href="/here" class="link" tabindex="-1">Show Here</a>
-              </paper-tab>
+              </paper-tab>-->
               </iron-selector>
             </paper-tabs>
 
@@ -268,12 +281,14 @@
           console.log(this.value);
           this.dataCollection = [];
           this.limit = this.value;
+          this.$.map.resizeMap();
         },
 
         getRadius: function(){
           console.log(this.radiusValue);
           this.dataCollection = [];
           this.radius = this.radiusValue;
+          this.$.map.resizeMap();
         }
       });
     });
