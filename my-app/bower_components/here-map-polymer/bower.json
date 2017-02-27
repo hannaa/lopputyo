@@ -1,0 +1,29 @@
+{
+  "name": "here-map-polymer",
+  "version": "0.0.1",
+  "authors": [
+    "Petr Archakov"
+  ],
+  "description": "Web Component for HERE Maps using Polymer",
+  "main": "elements/here-map.html",
+  "keywords": [
+    "here-map",
+    "polymer",
+    "here",
+    "web-components"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/keinkonzept/here-map-polymer",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "core-component-page": "Polymer/core-component-page#^0.5",
+    "polymer": "Polymer/polymer#~0.5.5",
+    "here-map-polymer": "keinkonzept/here-map-polymer"
+  }
+}
