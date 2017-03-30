@@ -13,9 +13,9 @@
   <template>
     <geo-location watch-pos latitude="{{ latitude }}" longitude="{{ longitude }}"></geo-location>
     <google-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="13" api-key="AIzaSyCZ52mvUoJplSOmOFE2KW0u5v6jny870IM">
-      <google-map-marker latitude="[[latitude]]" longitude="[[longitude]]" draggable="false"></google-map-marker>
+      <google-map-marker latitude="[[latitude]]" longitude="[[longitude]]" draggable="false" icon="../images/usermarker.png"></google-map-marker>
       <template is="dom-repeat" items="{{data}}">
-        <google-map-marker latitude="{{item.location.lat}}" longitude="{{item.location.lng}}" draggable="false" click-events="true">
+        <google-map-marker latitude="{{item.location.lat}}" longitude="{{item.location.lng}}" draggable="false" click-events="true" icon="../images/venuemarker.png">
           <h3 style="margin: 0">{{item.name}}</h3>
           <h3>{{item.location.address}}</h3>
           <a href="https://www.google.es/maps?saddr=[[latitude]], + [[longitude]] + &daddr={{item.location.address}}">Show directions in Google Maps</a>
